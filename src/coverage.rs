@@ -83,9 +83,11 @@ pub fn estimate(
             let situation = 95.0;
             match profile_res {
                 Err(e) => Err(GeopropError::from(e)),
-                Ok(profile) if profile.distances_m.len() <= 1 => {
-                    Ok((u64::from(cell), profile.terrain_elev_m.last().unwrap(), 0.0))
-                }
+                Ok(profile) if profile.distances_m.len() <= 1 => Ok((
+                    u64::from(cell),
+                    *profile.terrain_elev_m.last().unwrap(),
+                    0.0,
+                )),
                 Ok(profile) => {
                     let step_size_m = profile.distances_m[1];
                     let terrain = profile.terrain_elev_m;
@@ -106,7 +108,7 @@ pub fn estimate(
                         situation,
                     )
                     .map_err(GeopropError::from)
-                    .map(|loss| (u64::from(cell), terrain.last().unwrap(), loss))
+                    .map(|loss| (u64::from(cell), *terrain.last().unwrap(), loss))
                 }
             }
         }));
