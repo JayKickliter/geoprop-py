@@ -1,0 +1,38 @@
+name: Rust CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+
+    steps:
+      - name: Setup | Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.11.0
+
+      - name: Setup | Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup | Rust toolchain
+        uses: dtolnay/rust-toolchain@1.72.0
+        with:
+          components: clippy, rustfmt
+
+      - name: Setup | Rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Hygiene | Formatting
+        run: cargo fmt -- --check
+
+      - name: Hygiene | Clippy
+        run: cargo clippy -- -Dclippy::all -Dwarnings
