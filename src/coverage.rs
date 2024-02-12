@@ -35,7 +35,7 @@ pub fn estimate(
     center: Point,
     res: u8,
     freq_hz: f32,
-    radius_km: f32,
+    max_radius_km: f32,
     rx_alt_m: f32,
     rx_threshold_db: f32,
 ) -> Result<Vec<(u64, f32, f64)>, GeopropError> {
@@ -49,14 +49,8 @@ pub fn estimate(
         y: center.lat,
     };
 
-    // i = number of rings
-    // r = outward max radius
-    // edge_length = length of a cell edge in km
-    // i <= r / (edge_length * sqrt(3))
-
-    let mut i = 0;
-    while i as f32 <= radius_km / (edge_length * SQRT_3) {
-        let cells = cell.grid_ring_fast(i).collect::<Option<Vec<_>>>();
+    for ring in (0..).take_while(|ring| *ring as f32 <= max_radius_km / (edge_length * SQRT_3)) {
+        let cells = cell.grid_ring_fast(ring).collect::<Option<Vec<_>>>();
 
         hexes.par_extend(cells.into_par_iter().flatten().map(|cell| {
             let latlng = h3o::LatLng::from(cell);
@@ -112,8 +106,6 @@ pub fn estimate(
                 }
             }
         }));
-
-        i += 1;
     }
 
     let pairs = hexes
