@@ -21,13 +21,12 @@ rx_alt_m = 1
 h3_res = 10
 freq_hz = 900e6
 radius_km = 12
-rx_threshold_db = 160
 
-coverage = estimate(tiles, center, h3_res, freq_hz, radius_km, rx_alt_m, rx_threshold_db)
+coverage = estimate(tiles, center, h3_res, freq_hz, radius_km, rx_alt_m, rx_threshold_db = None)
 
 print("h3_id,elev,atten")
-for entry in coverage:
-  print("%x,%d,%f" % entry)
+for (cell, elev, atten) in coverage:
+  print("%x,%d,%f" % (cell, elev, -atten))
 ``` */
 #[pyfunction]
 pub fn estimate(
@@ -37,7 +36,7 @@ pub fn estimate(
     freq_hz: f32,
     max_radius_km: f32,
     rx_alt_m: f32,
-    rx_threshold_db: f32,
+    rx_threshold_db: Option<f32>,
 ) -> Result<Vec<(u64, f32, f64)>, GeopropError> {
     let res = Resolution::try_from(res).unwrap();
     let ll = h3o::LatLng::new(center.lat as f64, center.lon as f64).unwrap();
@@ -111,7 +110,11 @@ pub fn estimate(
     let pairs = hexes
         .into_iter()
         .flatten()
-        .filter(|(_cell, _elev, atten)| *atten < rx_threshold_db.into())
+        .filter(|(_cell, _elev, atten)| {
+            rx_threshold_db
+                .map(|rxt| *atten < rxt as f64)
+                .unwrap_or(true)
+        })
         .collect::<Vec<_>>();
 
     Ok(pairs)
