@@ -29,7 +29,7 @@ for (cell, elev, atten) in coverage:
   print("%x,%d,%f" % (cell, elev, -atten))
 ``` */
 #[pyfunction]
-pub fn estimate(
+pub(crate) fn estimate(
     tiles: &Tiles,
     center: Point,
     res: u8,
