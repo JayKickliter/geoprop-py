@@ -18,15 +18,13 @@ tiles = Tiles("nasadem/3-arcsecond/srtm/")
 
 ### Coverage
 
-![Grand Canyon](https://github.com/JayKickliter/geoprop-py/assets/2551201/0dd53033-eaf7-4560-bb5c-d05cbc3be660)
-
 
 ```python
 from geoprop import Tiles, Point, Coverage, Climate
 
 tiles = Tiles("nasadem/3-arcsecond/srtm/")
 
-# Create a reusable coverage object contains
+# Create a reusable coverage object contains 
 # less-frequently changing parameters.
 coverage = Coverage(tiles, climate = Climate.Desert)
 
@@ -40,6 +38,8 @@ radius_km = 12
 # Generate coverage estimates as (h3 cell, ground elevation, attenutation dBs)
 grand_canyon_estimated_coverage = coverage.estimate(center, h3_res, freq_hz, radius_km, rx_alt_m, rx_threshold_db = None)
 ```
+
+![Grand Canyon](https://github.com/JayKickliter/geoprop-py/assets/2551201/0dd53033-eaf7-4560-bb5c-d05cbc3be660)
 
 ### Terrain profile
 
@@ -64,9 +64,9 @@ ax.set_xlabel('distance (m)');
 ```
 
 
-
-![svg](README_files/README_8_0.svg)
-
+    
+![svg](README_files/README_9_0.svg)
+    
 
 
 ### Point to point attenuation
@@ -121,5 +121,7 @@ ax.set_ylabel('attenuation (dB)');
 ```
 
 
+    
+![svg](README_files/README_13_0.svg)
+    
 
-![svg](README_files/README_12_0.svg)
