@@ -162,17 +162,17 @@ impl Coverage {
             }));
         }
 
-        let pairs = hexes
+        hexes
             .into_iter()
-            .flatten()
-            .filter(|(_cell, _elev, atten)| {
+            .filter(|res| {
                 rx_threshold_db
-                    .map(|rxt| *atten < rxt as f64)
+                    .map(|rxt| match res {
+                        Err(_) => true,
+                        Ok((_cell, _elev, atten)) => *atten < rxt as f64,
+                    })
                     .unwrap_or(true)
             })
-            .collect::<Vec<_>>();
-
-        Ok(pairs)
+            .collect::<Result<Vec<_>, _>>()
     }
 }
 #[derive(Copy, Clone, Debug)]
