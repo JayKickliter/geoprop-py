@@ -39,7 +39,27 @@ radius_km = 12
 grand_canyon_estimated_coverage = coverage.estimate(center, h3_res, freq_hz, radius_km, rx_alt_m, rx_threshold_db = None)
 ```
 
-![Grand Canyon](https://github.com/JayKickliter/geoprop-py/assets/2551201/0dd53033-eaf7-4560-bb5c-d05cbc3be660)
+
+```python
+from IPython.display import IFrame
+IFrame('https://kepler.gl/#/demo?mapUrl=https://gist.githubusercontent.com/JayKickliter/5b99561a9658e62d67474b3a6eff52a1/raw/48d45ff01bd4908c46296c3445aef07068b1b2a9/grand-canyon-kepler.gl.json', width=1024, height=600)
+```
+
+
+
+
+
+<iframe
+    width="1024"
+    height="600"
+    src="https://kepler.gl/#/demo?mapUrl=https://gist.githubusercontent.com/JayKickliter/5b99561a9658e62d67474b3a6eff52a1/raw/48d45ff01bd4908c46296c3445aef07068b1b2a9/grand-canyon-kepler.gl.json"
+    frameborder="0"
+    allowfullscreen
+
+></iframe>
+
+
+
 
 ### Terrain profile
 
