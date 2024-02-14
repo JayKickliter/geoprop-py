@@ -25,10 +25,13 @@ p2p_atten = geoprop.p2p(profile, freq)
 path_atten = geoprop.path(profile, freq)
 ```
 
+
 ### Coverage
 
+![Screenshot 2024-02-14 at 10 45 53 AM](https://github.com/JayKickliter/geoprop-py/assets/2551201/0dd53033-eaf7-4560-bb5c-d05cbc3be660)
+
 ```python
-from geoprop import Tiles, Point, estimate
+from geoprop import Tiles, Point, Coverage
 
 tiles = Tiles("nasadem/3-arcsecond/srtm/")
 center = Point(36.159600, -112.306877, 1000)
@@ -36,11 +39,12 @@ rx_alt_m = 1
 h3_res = 10
 freq_hz = 900e6
 radius_km = 12
-rx_threshold_db = 160
 
-coverage = estimate(tiles, center, h3_res, freq_hz, radius_km, rx_alt_m, rx_threshold_db)
+coverage = Coverage(tiles)
+estimated_coverage = coverage.estimate(center, h3_res, freq_hz, radius_km, rx_alt_m, rx_threshold_db = None)
 
 print("h3_id,elev,atten")
-for entry in coverage:
-  print("%x,%d,%f" % entry)
+for (cell, elev, atten) in estimated_coverage:
+    print("%x,%d,%f" % (cell, elev, -atten))
 ```
+

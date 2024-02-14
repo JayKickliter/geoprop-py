@@ -1,10 +1,11 @@
 use crate::{error::GeopropError, point::Point, profile::Profile};
 use pyo3::{pyclass, pymethods};
-use std::path::PathBuf;
+use std::{path::PathBuf, sync::Arc};
 use terrain::{TileMode, Tiles as TerrainTiles};
 
 #[pyclass]
-pub(crate) struct Tiles(TerrainTiles);
+#[derive(Clone)]
+pub(crate) struct Tiles(pub(crate) Arc<TerrainTiles>);
 
 impl std::ops::Deref for Tiles {
     type Target = TerrainTiles;
@@ -17,7 +18,10 @@ impl std::ops::Deref for Tiles {
 impl Tiles {
     #[new]
     pub(crate) fn new(tile_dir: PathBuf) -> Result<Tiles, GeopropError> {
-        Ok(Tiles(TerrainTiles::new(tile_dir, TileMode::MemMap)?))
+        Ok(Tiles(Arc::new(TerrainTiles::new(
+            tile_dir,
+            TileMode::MemMap,
+        )?)))
     }
 
     pub(crate) fn profile(
