@@ -16,6 +16,26 @@ from geoprop import Tiles
 tiles = Tiles("nasadem/3-arcsecond/srtm/")
 ```
 
+### Sampling elevation
+
+
+```python
+from geoprop import Tiles, Point
+
+tiles = Tiles("nasadem/3-arcsecond/srtm/")
+# The lowest point in the US at −86m, but note that
+# SRTM isn't 100% accurate and the following call returns -84m.
+badwater_basin = Point(36.250278, -116.825833)
+tiles.elevation(badwater_basin)
+```
+
+
+
+
+    -84
+
+
+
 ### Coverage
 
 
@@ -65,7 +85,7 @@ ax.set_xlabel('distance (m)');
 
 
     
-![svg](README_files/README_9_0.svg)
+![svg](README_files/README_11_0.svg)
     
 
 
@@ -124,12 +144,6 @@ ax.set_ylabel('attenuation (dB)');
 
 
     
-![svg](README_files/README_13_0.svg)
+![svg](README_files/README_15_0.svg)
     
 
-
-
-```python
-
-
-```
