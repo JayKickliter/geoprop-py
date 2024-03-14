@@ -1,4 +1,5 @@
 use pyo3::{pyclass, pymethods};
+use terrain::geo::Coord;
 
 #[pyclass]
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -30,5 +31,14 @@ impl Point {
 
     fn __repr__(&self) -> String {
         format!("Point({}, {}, {})", self.lat, self.lon, self.alt)
+    }
+}
+
+impl Point {
+    pub(crate) fn to_coord(self) -> Coord<f64> {
+        Coord {
+            y: self.lat as f64,
+            x: self.lon as f64,
+        }
     }
 }
