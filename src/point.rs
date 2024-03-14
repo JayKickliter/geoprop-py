@@ -35,7 +35,7 @@ impl Point {
 }
 
 impl Point {
-    pub(crate) fn to_coord(self) -> Coord<f64> {
+    pub(crate) fn into_coord(self) -> Coord<f64> {
         Coord {
             y: self.lat as f64,
             x: self.lon as f64,

@@ -27,7 +27,7 @@ impl Tiles {
     /// Returns the elevation in meters at `point`, if
     /// present.
     pub(crate) fn elevation(&self, point: Point) -> Result<Option<i16>, GeopropError> {
-        let coord = point.to_coord();
+        let coord = point.into_coord();
         let tile = self.get(coord)?;
         Ok(tile.get(coord))
     }
